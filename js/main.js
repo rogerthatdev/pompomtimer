@@ -21,3 +21,7 @@ const PomSesh = function(length=25){
     }
 }
 
+function newTimer(length){
+    current = new PomSesh(length);
+    return current;
+}
