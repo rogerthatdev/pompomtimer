@@ -1,3 +1,4 @@
+let sessions = 0;
 class PomSesh {
     constructor(length=25){
         this.length = length*60000,
@@ -6,14 +7,31 @@ class PomSesh {
         this.paused = false
     }
     timeLeft(){
+        if (this.paused) {
+            return this.length
+        }
         if (Date.now() > this.timeEnd){
             return 0
         }
         return this.timeEnd - Date.now()
     }
+    pause() {
+        if (!this.paused) {
+            this.length = this.timeLeft()
+            this.paused = true;
+            this.timeEnd = null;
+        }
+    }
+    resume() {
+        if (this.paused) {
+            this.paused = false;
+            this.timeEnd = new Date(Date.now() + this.length)
+        }
+    }
+    
     getTimeLeft() {
         const now = new Date()
-        if (now > this.timeEnd){
+        if (!this.paused && now > this.timeEnd){
             return [0, 0]
         }
         const milliseconds = this.timeLeft()
