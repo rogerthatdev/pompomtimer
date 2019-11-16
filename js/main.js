@@ -1,35 +1,34 @@
 class PomSesh {
     constructor(length=25){
-        this.timeStart = new Date(),
-        this.timeEnd = new Date(this.timeStart.getTime() + length*60000),
-        this.id = this.timeStart.getTime(),
         this.length = length*60000,
-        this.status = 'started'}
-    timeLeft() {
-        const now = new Date()
-        if (now > this.timeEnd){
-            this.status = 'finished';
+        this.timeEnd = new Date(Date.now() + this.length),
+        this.id = Date.now(),
+        this.paused = false
+    }
+    timeLeft(){
+        if (Date.now() > this.timeEnd){
             return 0
         }
-        const milliseconds = this.timeEnd - now;
+        return this.timeEnd - Date.now()
+    }
+    getTimeLeft() {
+        const now = new Date()
+        if (now > this.timeEnd){
+            return [0, 0]
+        }
+        const milliseconds = this.timeLeft()
         const minutes = Math.floor(milliseconds / 60000);
         const seconds = parseInt(((milliseconds % 60000)/1000).toFixed(0))
         return [minutes, seconds]
     }
-    reset() {
-        const now = new Date();
-        this.timeEnd = new Date(now.getTime() + length*60000)
-    }
-        // this.reset = function() {
-        //     const now = new Date()
-        //     this.timeEnd = new Date(now.getTime() + length*60000);
-        // }
 }
 
 
 function newTimer(length){
     current = new PomSesh(length);
-    return current;
+    setInterval(()=> {
+        document.getElementById('live').innerHTML = showAsTime(...current.getTimeLeft());
+    },1000)
 }
 
 function showAsTime(minutes, seconds) {
@@ -45,5 +44,3 @@ function showAsTime(minutes, seconds) {
     } )
     return time.join(':')
 }
-console.log(showAsTime(0, 22))
-console.log(showAsTime(2, 4))
