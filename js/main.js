@@ -1,4 +1,6 @@
-let sessions = 0;
+let sessions = [];
+let sessionCount = sessions.filter(x => x.timeEnd && Date.now()>x.timeEnd).length
+
 class PomSesh {
     constructor(length=25){
         this.length = length*60000,
@@ -44,6 +46,7 @@ class PomSesh {
 
 function newTimer(length){
     current = new PomSesh(length);
+    sessions.push(current)
     setInterval(()=> {
         document.getElementById('live').innerHTML = showAsTime(...current.getTimeLeft());
     },1000)
