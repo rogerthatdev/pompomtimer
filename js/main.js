@@ -30,6 +30,7 @@ function PomPomApp() {
             multiplyPoms();
         }).catch((val) => {console.log(val)})
     }
+    // there should be a this.currentInterval that runs when timer is not paused
     this.status = () => {
         let current = Object.assign({}, this.currentSession);
         promise1 = new Promise( (resolve, reject) => {
