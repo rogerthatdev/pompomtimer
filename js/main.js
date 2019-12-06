@@ -65,3 +65,14 @@ function showAsTime(minutes, seconds) {
     } )
     return time.join(':')
 }
+
+function PomPomApp() {
+    this.sessions = []
+    this.sessionCount = this.sessions.filter
+        (x => x.timeEnd && Date.now()>x.timeEnd).length
+}
+
+window.onload = function() {
+    window.app = new PomPomApp();
+   // window.location.assign('http://www.google.com')
+  };
