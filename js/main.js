@@ -7,6 +7,15 @@ class PomSesh {
     }
 }
 
+function multiplyPoms(pomCount=1) {
+    let i;
+    for (i=0; i < pomCount; i++ ){
+        pom = document.createElement("IMG");
+        pom.width=25;
+        pom.src = 'img/pompom.png';
+        document.getElementById('progress').appendChild(pom)
+    }
+}
 
 function PomPomApp() {
     this.sessionCount = 0;
@@ -17,7 +26,9 @@ function PomPomApp() {
         this.status().then(val=>{
             console.log(val)
             this.sessionCount+=1;
-        }).catch((val) => {console.log('dead',val)})
+            alert(`Bark! Total for today: ${this.sessionCount}. \nBark! Take a break!`)
+            multiplyPoms();
+        }).catch((val) => {console.log(val)})
     }
     this.status = () => {
         let current = Object.assign({}, this.currentSession);
