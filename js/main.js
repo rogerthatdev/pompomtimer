@@ -1,5 +1,5 @@
 class PomSesh {
-    constructor(length=25){
+    constructor(length=1){
         this.length = length*60000,
         this.timeEnd = new Date(Date.now() + this.length),
         this.id = Date.now(),
@@ -17,12 +17,30 @@ function PomPomApp() {
     this.newTimer = (length) => {
         this.currentSession = new PomSesh(length);
         // current = this.currentSession;
-        // sessions.push(current)
+        // sessions.push(current)    
+        this.displayTimer()
+        this.status().then(val=>{
+            console.log(val)
+            this.sessionCount+=1;
+        })
+    }
+    this.status = () => {
+        promise1 = new Promise( (resolve, reject) => {
+            setInterval(() => {
+                if (Date.now() > this.currentSession.timeEnd && !this.currentSession.paused) {
+                    resolve('fin')
+                }
+            }, 1000)
+        }
+        )
+        return promise1
+    }
+
+    this.displayTimer = () => {
         setInterval(()=> {
             document.getElementById('live').innerHTML = this.showAsTime(...this.getTimeLeft());
         },1000)
     }
-
     this.timeLeft = () => {
         if (this.currentSession.paused) {
             return this.currentSession.length
