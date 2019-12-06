@@ -1,6 +1,3 @@
-let sessions = [];
-let sessionCount = sessions.filter(x => x.timeEnd && Date.now()>x.timeEnd).length
-
 class PomSesh {
     constructor(length=25){
         this.length = length*60000,
@@ -8,32 +5,50 @@ class PomSesh {
         this.id = Date.now(),
         this.paused = false
     }
-    timeLeft(){
-        if (this.paused) {
-            return this.length
+}
+
+
+
+
+function PomPomApp() {
+    
+    this.sessionCount = 0;
+    this.currentSession = null;
+    this.newTimer = (length) => {
+        this.currentSession = new PomSesh(length);
+        // current = this.currentSession;
+        // sessions.push(current)
+        setInterval(()=> {
+            document.getElementById('live').innerHTML = this.showAsTime(...this.getTimeLeft());
+        },1000)
+    }
+
+    this.timeLeft = () => {
+        if (this.currentSession.paused) {
+            return this.currentSession.length
         }
-        if (Date.now() > this.timeEnd){
+        if (Date.now() > this.currentSession.timeEnd){
             return 0
         }
-        return this.timeEnd - Date.now()
+        return this.currentSession.timeEnd - Date.now()
     }
-    pause() {
-        if (!this.paused) {
-            this.length = this.timeLeft()
-            this.paused = true;
-            this.timeEnd = null;
+
+    this.pause = () => {
+        if (!this.currentSession.paused) {
+            this.currentSession.length = this.timeLeft()
+            this.currentSession.paused = true;
+            this.currentSession.timeEnd = null;
         }
     }
-    resume() {
-        if (this.paused) {
-            this.paused = false;
-            this.timeEnd = new Date(Date.now() + this.length)
+    this.resume = () => {
+        if (this.currentSession.paused) {
+            this.currentSession.paused = false;
+            this.currentSession.timeEnd = new Date(Date.now() + this.currentSession.length)
         }
     }
-    
-    getTimeLeft() {
+    this.getTimeLeft = () => {
         const now = new Date()
-        if (!this.paused && now > this.timeEnd){
+        if (!this.currentSession.paused && now > this.currentSession.timeEnd){
             return [0, 0]
         }
         const milliseconds = this.timeLeft()
@@ -41,38 +56,21 @@ class PomSesh {
         const seconds = parseInt(((milliseconds % 60000)/1000).toFixed(0))
         return [minutes, seconds]
     }
-}
-
-
-function newTimer(length){
-    current = new PomSesh(length);
-    sessions.push(current)
-    setInterval(()=> {
-        document.getElementById('live').innerHTML = showAsTime(...current.getTimeLeft());
-    },1000)
-}
-
-function showAsTime(minutes, seconds) {
-    if (seconds === 60) {
-        minutes = minutes+1;
-        seconds = 0;
+    this.showAsTime = (minutes, seconds) => {
+        if (seconds === 60) {
+            minutes = minutes+1;
+            seconds = 0;
+        }
+        let time = [minutes, seconds]
+        time = time.map(x=>{
+            if (x < 10){
+                return '0'+x.toString()}
+            else {return x.toString()}
+        } )
+        return time.join(':')
     }
-    let time = [minutes, seconds]
-    time = time.map(x=>{
-        if (x < 10){
-            return '0'+x.toString()}
-        else {return x.toString()}
-    } )
-    return time.join(':')
-}
-
-function PomPomApp() {
-    this.sessions = []
-    this.sessionCount = this.sessions.filter
-        (x => x.timeEnd && Date.now()>x.timeEnd).length
 }
 
 window.onload = function() {
     window.app = new PomPomApp();
-   // window.location.assign('http://www.google.com')
   };
