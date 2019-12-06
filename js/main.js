@@ -1,6 +1,6 @@
 class PomSesh {
     constructor(length=1){
-        this.length = length*60000,
+        this.length = length*10000,
         this.timeEnd = new Date(Date.now() + this.length),
         this.id = Date.now(),
         this.paused = false
@@ -8,38 +8,39 @@ class PomSesh {
 }
 
 
-
-
 function PomPomApp() {
-    
     this.sessionCount = 0;
     this.currentSession = null;
     this.newTimer = (length) => {
-        this.currentSession = new PomSesh(length);
-        // current = this.currentSession;
-        // sessions.push(current)    
+        this.currentSession = new PomSesh(length);  
         this.displayTimer()
         this.status().then(val=>{
             console.log(val)
             this.sessionCount+=1;
-        })
+        }).catch((val) => {console.log('dead',val)})
     }
     this.status = () => {
+        let current = Object.assign({}, this.currentSession);
         promise1 = new Promise( (resolve, reject) => {
-            setInterval(() => {
-                if (Date.now() > this.currentSession.timeEnd && !this.currentSession.paused) {
-                    resolve('fin')
+            checkFinish = () => {
+                console.log(current.id === this.currentSession.id)
+                if (current.id !== this.currentSession.id) {
+                    reject('arf!')
+                    clearInterval(currentInterval)
                 }
-            }, 1000)
-        }
-        )
+                if (Date.now() > this.currentSession.timeEnd && !this.currentSession.paused) {
+                    resolve('woof!')
+                    clearInterval(currentInterval)
+                }
+            }
+            let currentInterval = setInterval(checkFinish, 1000);
+        });
         return promise1
     }
-
     this.displayTimer = () => {
         setInterval(()=> {
             document.getElementById('live').innerHTML = this.showAsTime(...this.getTimeLeft());
-        },1000)
+        }, 1000)
     }
     this.timeLeft = () => {
         if (this.currentSession.paused) {
@@ -83,7 +84,7 @@ function PomPomApp() {
         time = time.map(x=>{
             if (x < 10){
                 return '0'+x.toString()}
-            else {return x.toString()}
+            else { return x.toString() }
         } )
         return time.join(':')
     }
