@@ -1,6 +1,6 @@
 class PomSesh {
-    constructor(length=1){
-        this.length = length*10000,
+    constructor(length=25){
+        this.length = length*60000,
         this.timeEnd = new Date(Date.now() + this.length),
         this.id = Date.now(),
         this.paused = false
