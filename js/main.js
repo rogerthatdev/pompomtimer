@@ -1,5 +1,5 @@
 class PomSesh {
-    constructor(length=25){
+    constructor(length=.5){
         this.length = length*60000,
         this.timeEnd = new Date(Date.now() + this.length),
         this.id = Date.now(),
@@ -7,14 +7,12 @@ class PomSesh {
     }
 }
 
-function multiplyPoms(pomCount=1) {
-    let i;
-    for (i=0; i < pomCount; i++ ){
-        pom = document.createElement("IMG");
-        pom.width=25;
-        pom.src = 'img/pompom.png';
-        document.getElementById('progress').appendChild(pom)
-    }
+function addPom() {
+    pom = document.createElement("IMG");
+    pom.width=25;
+    pom.src = 'img/pompom.png';
+    document.getElementById('progress').appendChild(pom)
+    
 }
 
 function PomPomApp() {
@@ -27,7 +25,7 @@ function PomPomApp() {
             console.log(val)
             this.sessionCount+=1;
             alert(`Bark! Total for today: ${this.sessionCount}. \nBark! Take a break!`)
-            multiplyPoms();
+            addPom();
         }).catch((val) => {console.log(val)})
     }
     // there should be a this.currentInterval that runs when timer is not paused
