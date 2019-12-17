@@ -76,19 +76,20 @@ function PomPomApp() {
         return this.currentSession.timeEnd - Date.now()
     }
 
-    this.pause = () => {
+    this.pauseResume = () => {
         if (!this.currentSession.paused) {
+            debug('pausing')
             this.currentSession.length = this.timeLeft()
             this.currentSession.paused = true;
             this.currentSession.timeEnd = null;
-        }
-    }
-    this.resume = () => {
-        if (this.currentSession.paused) {
+        } 
+        else {
+            debug('resuming')
             this.currentSession.paused = false;
             this.currentSession.timeEnd = new Date(Date.now() + this.currentSession.length)
         }
     }
+
     this.getTimeLeft = () => {
         const now = new Date()
         if (!this.currentSession.paused && now > this.currentSession.timeEnd){
