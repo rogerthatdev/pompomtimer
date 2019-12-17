@@ -1,3 +1,17 @@
+const DEBUG_MODE = true
+let debug
+if (DEBUG_MODE){
+    debug = (msg) =>{
+        console.log('DEBUG: ' + msg)
+    }
+} else {
+    debug = () =>{
+    }
+}
+
+
+
+
 class PomSesh {
     constructor(length=.5){
         this.length = length*60000,
@@ -22,18 +36,18 @@ function PomPomApp() {
         this.currentSession = new PomSesh(length);  
         this.displayTimer()
         this.status().then(val=>{
-            console.log(val)
+            debug(val)
             this.sessionCount+=1;
             alert(`Bark! Total for today: ${this.sessionCount}. \nBark! Take a break!`)
             addPom();
-        }).catch((val) => {console.log(val)})
+        }).catch((val) => {debug(val)})
     }
     // there should be a this.currentInterval that runs when timer is not paused
     this.status = () => {
         let current = Object.assign({}, this.currentSession);
         promise1 = new Promise( (resolve, reject) => {
             checkFinish = () => {
-                console.log(current.id === this.currentSession.id)
+                debug(current.id === this.currentSession.id)
                 if (current.id !== this.currentSession.id) {
                     reject('arf!')
                     clearInterval(currentInterval)
