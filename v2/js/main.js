@@ -28,7 +28,3 @@ function newTimer(length=25){
 function timeLeft(timer){
     return timer.endTime() - Date.now() 
 }
-// window.onload = function() {
-//     window.app = newTimer();
-
-//   };
