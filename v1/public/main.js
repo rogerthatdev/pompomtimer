@@ -13,7 +13,7 @@ if (DEBUG_MODE){
 
 
 class PomSesh {
-    constructor(length=.5){
+    constructor(length=25){
         this.length = length*60000,
         this.timeEnd = new Date(Date.now() + this.length),
         this.id = Date.now(),
@@ -23,7 +23,7 @@ class PomSesh {
 
 function addPom() {
     pom = document.createElement("IMG");
-    pom.width=25;
+    pom.className = 'progress-pom'
     pom.src = 'img/pompom.png';
     document.getElementById('progress').appendChild(pom)
     
